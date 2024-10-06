@@ -1,0 +1,9 @@
+{
+    "name": "@vivant/core",
+    "version": "0.0.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/NoelDeMartin/vivant.git"
+    },
+    "author": "Noel De Martin"
+}

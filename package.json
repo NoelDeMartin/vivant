@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "devDependencies": {
+        "@noeldemartin/eslint-config-typescript": "^0.1.1-next.8da46d7532acbe6ee4126f410141b7f281ec349a",
+        "eslint": "^8.57.1",
+        "prettier": "^3.3.3",
+        "prettier-eslint-cli": "^8.0.1",
+        "prettier-plugin-tailwindcss": "^0.6.8"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@noeldemartin/eslint-config-typescript"
+        ]
+    },
+    "prettier": {
+        "plugins": [
+            "prettier-plugin-tailwindcss"
+        ],
+        "printWidth": 120
+    }
+}
