@@ -1,9 +1,37 @@
 {
     "name": "vivant",
     "version": "0.0.0",
+    "type": "module",
+    "sideEffects": false,
+    "scripts": {
+        "build": "vite build",
+        "lint": "npm run lint:eslint && npm run lint:vue-tsc",
+        "lint:eslint": "eslint src",
+        "lint:vue-tsc": "vue-tsc --build --force"
+    },
+    "dependencies": {
+        "@noeldemartin/utils": "0.5.1-next.82707467527729a9fe7c2155959beb4b5ea30b81",
+        "@vivantjs/core": "*",
+        "@vueuse/motion": "^2.2.6",
+        "vue": "^3.5.12"
+    },
+    "main": "./dist/vivant.umd.cjs",
+    "module": "./dist/vivant.js",
+    "types": "./dist/vivant.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/vivant.js",
+            "require": "./dist/vivant.umd.cjs"
+        }
+    },
+    "files": [
+        "src",
+        "dist"
+    ],
+    "license": "MIT",
+    "author": "Noel De Martin",
     "repository": {
         "type": "git",
         "url": "https://github.com/NoelDeMartin/vivant.git"
-    },
-    "author": "Noel De Martin"
+    }
 }

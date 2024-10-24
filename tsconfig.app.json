@@ -1,0 +1,23 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": [
+        "packages/*/src/**/*.ts",
+        "packages/*/src/**/*.vue",
+        "playground/src/**/*.ts",
+        "playground/src/**/*.vue"
+    ],
+    "compilerOptions": {
+        "moduleDetection": "force",
+        "isolatedModules": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./playground/src/*"],
+            "@vivantjs/core": ["./packages/core/src"],
+            "@vivantjs/core/*": ["./packages/core/src/*"],
+            "vivant": ["./packages/vivant/src"],
+            "vivant/*": ["./packages/vivant/src/*"]
+        }
+    }
+}

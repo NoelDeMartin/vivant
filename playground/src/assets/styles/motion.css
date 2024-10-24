@@ -1,0 +1,11 @@
+/**
+ * Undo residual styles from @vueuse/motion.
+ *
+ * See:
+ *   - https://github.com/vueuse/motion/issues/157
+ *   - https://github.com/vueuse/motion/blob/12d1020bef029ab62f90c401e506334263187f65/src/reactiveTransform.ts#L60
+ */
+
+[style='transform: translateZ(0px);'] {
+    transform: none !important;
+}

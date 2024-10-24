@@ -1,3 +1,8 @@
 # dependencies
 /node_modules
 /packages/**/node_modules
+
+# build
+/packages/**/dist
+tsconfig.tsbuildinfo
+*.tgz
