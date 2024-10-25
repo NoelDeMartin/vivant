@@ -25,7 +25,7 @@
                         >
                             {{ pirate.name }}
                         </h3>
-                        <p :layout-id="`role-${pirate.id}`" class="self-center text-sm leading-6 text-gray-400">
+                        <p :layout-id="`role-${pirate.id}`" class="self-center text-sm leading-6 text-gray-500">
                             {{ pirate.role }}
                         </p>
                     </div>
@@ -62,7 +62,7 @@
                         </h3>
                         <p
                             :layout-id="`role-${activePirate.id}`"
-                            class="self-center text-lg leading-7 text-gray-400 sm:self-start"
+                            class="self-center text-lg leading-7 text-gray-500 sm:self-start"
                         >
                             {{ activePirate.role }}
                         </p>
@@ -74,21 +74,21 @@
                                 <i-fluent-thumb-like-16-filled class="size-4" />
                                 <span>Likes</span>
                             </div>
-                            <div class="text-gray-500">
+                            <div class="text-sm text-gray-400 md:text-base">
                                 {{ activePirate.likes }}.
                             </div>
                             <div class="mt-3 flex items-center space-x-2 font-medium sm:mt-0">
                                 <i-fluent-thumb-dislike-16-filled class="size-4" />
                                 <span>Dislikes</span>
                             </div>
-                            <div class="text-gray-500">
+                            <div class="text-sm text-gray-400 md:text-base">
                                 {{ activePirate.dislikes }}.
                             </div>
                             <div class="mt-3 flex items-center space-x-2 font-medium sm:mt-0">
                                 <i-streamline-sleep-solid class="size-4" />
                                 <span>Sleeps</span>
                             </div>
-                            <div class="text-gray-500">
+                            <div class="text-sm text-gray-400 md:text-base">
                                 {{ activePirate.sleeps }}.
                             </div>
                         </div>
@@ -169,7 +169,7 @@ const crew: Pirate[] = [
         id: 'zoro',
         name: 'Roronoa Zoro',
         role: 'Swordsman',
-        likes: 'White rice, Sea Beast meat, and likes that complements sake',
+        likes: 'White rice, Sea Beast meat, and food that complements sake',
         dislikes: 'Chocolate (It\'s too sweet)',
         sleeps: '4 am to 7 am (3 hours) (+naps)',
         fandomUrl: 'https://onepiece.fandom.com/wiki/Roronoa_Zoro',
@@ -199,7 +199,7 @@ const crew: Pirate[] = [
         id: 'sanji',
         name: 'Sanji',
         role: 'Cook',
-        likes: 'Spicy sealikes pasta and likes that complements black tea',
+        likes: 'Spicy seafood pasta and food that complements black tea',
         dislikes: 'Konjac (Not nutritious)',
         sleeps: '12 am to 5 am (5 hours)',
         fandomUrl: 'https://onepiece.fandom.com/wiki/Sanji',
