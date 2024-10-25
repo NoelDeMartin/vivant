@@ -7,7 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 
+const isProduction = process.env.NODE_ENV === 'production';
+const basePath = isProduction ? '/vivant/' : undefined;
+
 export default defineConfig({
+    base: basePath,
     plugins: [
         vue(),
         tailwindcss(),
