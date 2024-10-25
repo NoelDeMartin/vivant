@@ -1,5 +1,5 @@
 <template>
-    <ul class="isolate flex items-center space-x-4">
+    <ul class="isolate flex flex-col items-center gap-2 md:flex-row">
         <li v-for="item of items" :key="item">
             <button type="button" class="relative py-3 px-4" @click="active = item">
                 <div

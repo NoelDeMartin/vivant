@@ -21,17 +21,17 @@
                     class="flex h-7 items-center overflow-hidden text-sm text-gray-500 hover:text-gray-800"
                     @click.prevent="navigateToExample()"
                 >
-                    <i-zondicons-arrow-left v-if="direction === 'backwards'" class="mr-1.5 h-3 w-3 shrink-0" />
+                    <i-zondicons-arrow-left v-if="direction === 'backwards'" class="mr-1.5 size-4 shrink-0 md:size-3" />
                     <AnimatedTransition
                         enter-animation="verticalSlideIn"
                         leave-animations="freeze,verticalSlideOut"
                         :duration="300"
                     >
-                        <span :key="example.slug" class="truncate">
+                        <span :key="example.slug" class="sr-only truncate md:not-sr-only">
                             {{ example.title }}
                         </span>
                     </AnimatedTransition>
-                    <i-zondicons-arrow-right v-if="direction === 'forward'" class="ml-1.5 h-3 w-3 shrink-0" />
+                    <i-zondicons-arrow-right v-if="direction === 'forward'" class="ml-1.5 size-4 shrink-0 md:size-3" />
                 </a>
             </RouterLink>
         </AfterImage>
@@ -39,17 +39,14 @@
 </template>
 
 <script setup lang="ts">
-import { after } from '@noeldemartin/utils';
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { animationsDirection } from '@/lib/animations';
-import { PAGE_TRANSITION_DURATION } from '@/lib/constants';
 import { watchKeyboardShortcut } from '@/lib/keyboard';
 import type { Example } from '@/lib/examples';
 
 function navigateToExample() {
-    if (!props.example || isNavigating.value) {
+    if (!props.example) {
         return;
     }
 
@@ -72,10 +69,6 @@ const props = defineProps({
     },
 });
 const router = useRouter();
-const isNavigating = ref(false);
-
-router.beforeEach(() => void (isNavigating.value = true));
-router.afterEach(() => void after({ ms: PAGE_TRANSITION_DURATION }).then(() => (isNavigating.value = false)));
 
 watchKeyboardShortcut(props.direction === 'forward' ? 'ArrowRight' : 'ArrowLeft', () => navigateToExample());
 </script>

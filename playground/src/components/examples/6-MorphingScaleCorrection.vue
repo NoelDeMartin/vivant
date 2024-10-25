@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full flex-col items-center space-y-2 px-6">
+    <div class="flex w-full flex-col items-center space-y-2">
         <button type="button" class="self-center rounded-lg bg-white p-2 text-gray-700" @click="big = !big">
             Toggle: {{ big ? 'Big' : 'Small' }}
         </button>

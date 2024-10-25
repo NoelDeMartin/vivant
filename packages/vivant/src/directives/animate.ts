@@ -94,7 +94,7 @@ function resolveVariants(node: VNode, variantsRef: Ref<MotionVariants<never>>) {
             continue;
         }
 
-        if (transitionKeys.includes(key) && typeof props[key] !== 'number') {
+        if (transitionKeys.includes(key) && typeof props[key] === 'number') {
             for (const variantKey of ['enter', 'leave', 'visible', 'visibleOnce'] as const) {
                 const variantConfig = variantsRef.value[variantKey];
 

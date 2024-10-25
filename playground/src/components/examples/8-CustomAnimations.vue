@@ -27,7 +27,7 @@
                     class="mr-1 size-6 transition-transform duration-500"
                     :class="{ 'rotate-90': show }"
                 />
-                <span>Toggle list</span>
+                <span>Toggle</span>
             </button>
             <AnimatedTransition
                 enter-from-class="absolute bottom-0 h-0"

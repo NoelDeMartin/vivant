@@ -2,7 +2,7 @@
     <button
         ref="$button"
         type="button"
-        class="flex flex-col items-center pt-12 pb-4"
+        class="flex flex-col items-center pt-24 pb-4 md:pt-6"
         @click="scroll()"
     >
         <p>Scroll down!</p>

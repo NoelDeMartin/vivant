@@ -1,5 +1,5 @@
 <template>
-    <p>&#x3C;!-- Edit this --&#x3E;</p>
+    <p>&#x3C;!-- Edit me --&#x3E;</p>
 </template>
 
 <script lang="ts">

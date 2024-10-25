@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { toString } from '@noeldemartin/utils';
+import { Storage, after, once, toString } from '@noeldemartin/utils';
+import type { RouteLocationRaw } from 'vue-router';
 
 import { examplePages } from '@/lib/examples';
 
 import Home from './Home.vue';
 import Example from './Example.vue';
+import { PAGE_TRANSITION_DURATION } from '@/lib/constants';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,5 +35,25 @@ const router = createRouter({
         },
     ],
 });
+
+let isNavigating = false;
+
+router.beforeEach(async () => {
+    if (isNavigating) {
+        await after({ ms: PAGE_TRANSITION_DURATION + 100 });
+    }
+
+    isNavigating = true;
+
+    after({ ms: PAGE_TRANSITION_DURATION + 100 }).then(() => (isNavigating = false));
+});
+
+router.beforeEach(
+    once(() => {
+        const route = Storage.pull<RouteLocationRaw>('static-404-redirect');
+
+        route && router.replace(route);
+    }),
+);
 
 export default router;

@@ -1,15 +1,19 @@
 <template>
-    <header v-if="examplesReady" class="flex pt-4 text-center">
+    <header v-if="examplesReady" class="flex flex-row items-center pt-4 text-center">
         <AppHeaderLink :example="examplesNavigation.previous" direction="backwards" />
-        <div class="flex flex-col items-center" :class="example ? 'mt-0' : 'mt-20'">
+        <div class="flex flex-col items-center" :class="example ? 'mt-0' : 'mt-10 md:mt-20'">
             <AnimatedTransition
                 enter-animation="verticalSlideIn"
                 leave-animations="freeze,verticalSlideOut"
                 :duration="300"
             >
-                <FerrisWheel v-if="!example" class="size-40" />
+                <FerrisWheel v-if="!example" class="size-32 md:size-40" />
             </AnimatedTransition>
-            <h1 v-animate-layout class="mx-2 font-semibold tracking-tight" :class="example ? 'text-xl' : 'text-5xl'">
+            <h1
+                v-animate-layout
+                class="mx-2 font-semibold tracking-tight"
+                :class="example ? 'text-xl' : 'text-3xl md:text-5xl'"
+            >
                 <RouterLink
                     v-if="example"
                     to="/"
