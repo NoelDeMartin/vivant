@@ -11,11 +11,11 @@ const elementsConfig: WeakMap<AnimatableElement, TransitionConfig> = new WeakMap
 
 function playTransitionHooks(transitionEntries: [AnimatableElement, Transition][]) {
     // Update layout snapshots.
-    const layoutGroups = arrayUnique(transitionEntries.map(([element]) => element.getAttribute('layout-group')));
+    // const layoutGroups = arrayUnique(transitionEntries.map(([element]) => element.getAttribute('layout-group')));
 
-    for (const layoutGroup of layoutGroups) {
-        layoutUpdated(layoutGroup ?? undefined);
-    }
+    // for (const layoutGroup of layoutGroups) {
+    //     layoutUpdated(layoutGroup ?? undefined);
+    // }
 
     // Update from and to classes.
     // We need to do this manually because Vue's implementation takes two frames to update, and this causes
@@ -31,9 +31,11 @@ function playTransitionHooks(transitionEntries: [AnimatableElement, Transition][
         recordSnapshot(element);
     }
 
-    for (const layoutGroup of layoutGroups) {
-        layoutUpdated(layoutGroup ?? undefined);
-    }
+    layoutUpdated();
+
+    // for (const layoutGroup of layoutGroups) {
+    //     layoutUpdated(layoutGroup ?? undefined);
+    // }
 
     // Play hooks.
     Promise.all(

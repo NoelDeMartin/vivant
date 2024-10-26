@@ -67,13 +67,15 @@ export function layoutAnimatedElementLeave(element: AnimatableElement): void {
 }
 
 export function layoutAnimatedElementUpdated(element: AnimatableElement, group?: string): void {
-    if (group && element.getAttribute('layout-group') !== group) {
-        return;
-    }
+    group;
 
-    if (!group && element.hasAttribute('layout-group')) {
-        return;
-    }
+    // if (group && element.getAttribute('layout-group') !== group) {
+    //     return;
+    // }
+
+    // if (!group && element.hasAttribute('layout-group')) {
+    //     return;
+    // }
 
     const animatableChildren = Array.from(element.children).filter((child) => isAnimatableElement(child));
     const previousSnapshot = getSnapshot(element);

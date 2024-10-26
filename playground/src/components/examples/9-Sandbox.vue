@@ -5,6 +5,7 @@
 <script lang="ts">
 import { md } from '@/lib/markdown';
 
+// TODO test that it works with github.dev
 export const title = 'Sandbox';
 export const description = md`
     Try it on your own! To get started, you can clone
