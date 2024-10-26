@@ -36,9 +36,16 @@ const router = createRouter({
     ],
 });
 
+let firstNavigation = true;
 let isNavigating = false;
 
 router.beforeEach(async () => {
+    if (firstNavigation) {
+        firstNavigation = false;
+
+        return;
+    }
+
     if (isNavigating) {
         await after({ ms: PAGE_TRANSITION_DURATION + 100 });
     }
