@@ -1,4 +1,4 @@
-import { required } from '@noeldemartin/utils';
+import { objectWithoutEmpty, required } from '@noeldemartin/utils';
 
 import { resetElementStyles, setElementStyles } from '@vivantjs/core/lib/styles';
 import type { AnimatableElement } from '@vivantjs/core/animation';
@@ -19,11 +19,14 @@ interface TransformationDefinition {
     relativeCenterY?: number;
 }
 
-interface TransformationSnapshot {
+interface FrameSnapshot {
+    bounds: DOMRect;
     x: number;
     y: number;
     width: number;
     height: number;
+    translateX: number;
+    translateY: number;
     scaleX: number;
     scaleY: number;
 }
@@ -147,61 +150,93 @@ export default abstract class LayoutAnimation {
         this.updateElementStyles(this.config.inverse ? 1 - progress : progress);
     }
 
-    protected updateElementStyles(progress: number, parentStyles?: TransformationSnapshot): void {
+    protected updateElementStyles(progress: number, parentFrameSnapshot?: FrameSnapshot): void {
         const transformation = required(this.transformation);
         const translateX = progress * transformation.translateX;
         const translateY = progress * transformation.translateY;
         const scaleX = 1 + progress * transformation.scaleX;
         const scaleY = 1 + progress * transformation.scaleY;
         const bounds = this.config.inverse ? transformation.lastBounds : transformation.firstBounds;
-
-        // Apply transforms.
-        const transformStyles = [
-            `translateX(${translateX}px)`,
-            `translateY(${translateY}px)`,
-            `scaleX(${scaleX})`,
-            `scaleY(${scaleY})`,
-        ];
-
-        // Correct parent distortion.
-        if (parentStyles) {
-            transformStyles.unshift(
-                `translateX(${
-                    bounds.x -
-                    (parentStyles.x + parentStyles.width * required(transformation.relativeCenterX) - bounds.width / 2)
-                }px)`,
-            );
-            transformStyles.unshift(
-                `translateY(${
-                    bounds.y -
-                    (parentStyles.y +
-                        parentStyles.height * required(transformation.relativeCenterY) -
-                        bounds.height / 2)
-                }px)`,
-            );
-            transformStyles.unshift(`scaleX(${1 / parentStyles.scaleX})`);
-            transformStyles.unshift(`scaleY(${1 / parentStyles.scaleY})`);
-        }
-
-        setElementStyles(this.$element, {
-            transform: transformStyles.join(' '),
-            borderRadius: [
-                `${(transformation.borderRadiusStartX + progress * transformation.borderRadiusDeltaX) / scaleX}px`,
-                `${(transformation.borderRadiusStartY + progress * transformation.borderRadiusDeltaY) / scaleY}px`,
-            ].join(' / '),
-        });
-
-        // Update children.
-        const frameStyles: TransformationSnapshot = {
+        const frameSnapshot: FrameSnapshot = {
             x: bounds.x + translateX - (bounds.width * scaleX - bounds.width) / 2,
             y: bounds.y + translateY - (bounds.height * scaleY - bounds.height) / 2,
             width: bounds.width * scaleX,
             height: bounds.height * scaleY,
-            scaleX: scaleX,
-            scaleY: scaleY,
+            bounds,
+            translateX,
+            translateY,
+            scaleX,
+            scaleY,
         };
 
-        this.config.children?.forEach((child) => child.updateElementStyles(progress, frameStyles));
+        // Update element.
+        setElementStyles(
+            this.$element,
+            objectWithoutEmpty({
+                transform: this.getUpdatedTransform(frameSnapshot, parentFrameSnapshot),
+                borderRadius: this.getUpdatedBorderRadius(progress, frameSnapshot),
+            }),
+        );
+
+        // Update children.
+        this.config.children?.forEach((child) => child.updateElementStyles(progress, frameSnapshot));
+    }
+
+    protected getUpdatedTransform(
+        frameSnapshot: FrameSnapshot,
+        parentFrameSnapshot?: FrameSnapshot,
+    ): string | undefined {
+        const transformation = required(this.transformation);
+
+        // Initialize element transforms.
+        let translateX = frameSnapshot.translateX;
+        let translateY = frameSnapshot.translateY;
+        let scaleX = frameSnapshot.scaleX;
+        let scaleY = frameSnapshot.scaleY;
+
+        // Correct parent distortion.
+        if (parentFrameSnapshot) {
+            translateX +=
+                frameSnapshot.bounds.x -
+                parentFrameSnapshot.x -
+                parentFrameSnapshot.width * required(transformation.relativeCenterX) +
+                frameSnapshot.bounds.width / 2;
+
+            translateY +=
+                frameSnapshot.bounds.y -
+                parentFrameSnapshot.y -
+                parentFrameSnapshot.height * required(transformation.relativeCenterY) +
+                frameSnapshot.bounds.height / 2;
+
+            translateX /= frameSnapshot.scaleX;
+            translateY /= frameSnapshot.scaleY;
+            scaleX /= parentFrameSnapshot.scaleX;
+            scaleY /= parentFrameSnapshot.scaleY;
+        }
+
+        scaleX = Math.round(scaleX * 100000) / 100000;
+        scaleY = Math.round(scaleY * 100000) / 100000;
+        translateX = Math.round(translateX * 1000) / 1000;
+        translateY = Math.round(translateY * 1000) / 1000;
+
+        if (scaleX === 1 && scaleY === 1 && translateX === 0 && translateY === 0) {
+            return;
+        }
+
+        const scale = `scale(${scaleX}, ${scaleY})`;
+        const translate = `translate(${translateX}px, ${translateY}px)`;
+
+        return parentFrameSnapshot ? `${scale} ${translate}` : `${translate} ${scale}`;
+    }
+
+    protected getUpdatedBorderRadius(progress: number, frameSnapshot: FrameSnapshot): string {
+        const transformation = required(this.transformation);
+        const horizontalRadius =
+            (transformation.borderRadiusStartX + progress * transformation.borderRadiusDeltaX) / frameSnapshot.scaleX;
+        const verticalRadius =
+            (transformation.borderRadiusStartY + progress * transformation.borderRadiusDeltaY) / frameSnapshot.scaleY;
+
+        return `${horizontalRadius}px / ${verticalRadius}px`;
     }
 
 }
