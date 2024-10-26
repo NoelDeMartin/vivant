@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { setElementStyles } from '@vivantjs/core/lib/styles';
+import { setElementStyles } from 'vivant';
 import { useTemplateRef, watchEffect } from 'vue';
 
 const $root = useTemplateRef('$root');

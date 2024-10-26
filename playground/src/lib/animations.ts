@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { animateStyles } from 'vivant';
-import type { AnimatableElement, Animation, AnimationConfig } from '@vivantjs/core';
+import type { AnimatableElement, Animation, AnimationConfig } from 'vivant';
 
 async function horizontalSlide(element: AnimatableElement, action: 'in' | 'out', config: AnimationConfig) {
     const enter = action === 'in';

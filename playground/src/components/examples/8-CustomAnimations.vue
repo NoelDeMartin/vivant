@@ -69,12 +69,10 @@ Example extracted from my app [Focus](https://focus.noeldemartin.com)
 </script>
 
 <script setup lang="ts">
-import { animateStyles } from 'vivant';
-import { getPreviousSnapshot, getSnapshot } from '@vivantjs/core';
+import { animateStyles, getPreviousSnapshot, getSnapshot, resetElementStyles } from 'vivant';
 import { ref } from 'vue';
 import { required, toString } from '@noeldemartin/utils';
-import { resetElementStyles } from '@vivantjs/core/lib/styles';
-import type { AnimatableElement } from '@vivantjs/core';
+import type { AnimatableElement } from 'vivant';
 
 // Note: You can also find more custom animations in playground/src/lib/animations.ts
 

@@ -13,10 +13,11 @@ export default defineConfig({
             fileName: 'vivant',
         },
         rollupOptions: {
-            external: ['@vivantjs/core', '@vueuse/motion', 'vue'],
+            external: ['@noeldemartin/utils', '@vivantjs/core', '@vueuse/motion', 'vue'],
             output: {
                 exports: 'named',
                 globals: {
+                    '@noeldemartin/utils': 'NDMUtils',
                     '@vivantjs/core': 'VivantCore',
                     '@vueuse/motion': 'VueUseMotion',
                     'vue': 'Vue',
@@ -30,6 +31,7 @@ export default defineConfig({
             rollupTypes: true,
             tsconfigPath: './tsconfig.json',
             insertTypesEntry: true,
+            aliasesExclude: ['@vivantjs/core'],
         }),
     ],
     resolve: {

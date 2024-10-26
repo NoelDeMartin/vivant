@@ -9,7 +9,7 @@ export interface Options {
     animations?: Record<string, Animation>;
 }
 
-export default function(options: Options = {}): Plugin {
+export default function vivant(options: Options = {}): Plugin {
     return {
         install(app) {
             Object.entries(directives).forEach(([name, directive]) => app.directive(name, directive));
