@@ -1,6 +1,6 @@
 import { recordSnapshot } from '@vivantjs/core';
 import { nextTick } from 'vue';
-import { PromisedValue, isEmpty, tap } from '@noeldemartin/utils';
+import { PromisedValue, arrayUnique, isEmpty, tap } from '@noeldemartin/utils';
 import type { AnimatableElement } from '@vivantjs/core';
 
 import { layoutUpdated } from 'vivant/layout-animations';
@@ -10,6 +10,13 @@ const elementTransitions: Map<AnimatableElement, Transition> = new Map();
 const elementsConfig: WeakMap<AnimatableElement, TransitionConfig> = new WeakMap();
 
 function playTransitionHooks(transitionEntries: [AnimatableElement, Transition][]) {
+    // Update layout snapshots.
+    const layoutGroups = arrayUnique(transitionEntries.map(([element]) => element.getAttribute('layout-group')));
+
+    for (const layoutGroup of layoutGroups) {
+        layoutUpdated(layoutGroup ?? undefined);
+    }
+
     // Update from and to classes.
     // We need to do this manually because Vue's implementation takes two frames to update, and this causes
     // a flicker in the UI when the implementation relies on JavaScript updates rather than CSS transitions.
@@ -20,10 +27,12 @@ function playTransitionHooks(transitionEntries: [AnimatableElement, Transition][
     }
 
     // Update snapshots.
-    layoutUpdated();
-
     for (const [element] of transitionEntries) {
         recordSnapshot(element);
+    }
+
+    for (const layoutGroup of layoutGroups) {
+        layoutUpdated(layoutGroup ?? undefined);
     }
 
     // Play hooks.
