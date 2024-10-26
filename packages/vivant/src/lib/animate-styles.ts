@@ -111,5 +111,6 @@ export default async function animateStyles(
 declare module '@vueuse/motion' {
     export interface TransformProperties {
         custom?: number;
+        transform?: string;
     }
 }

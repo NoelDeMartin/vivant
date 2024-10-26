@@ -45,9 +45,9 @@ function getLayoutAnimationConfig(element: AnimatableElement): Omit<LayoutAnimat
     });
 }
 
-export function layoutUpdated(): void {
+export function layoutUpdated(group?: string): void {
     for (const element of elements) {
-        layoutAnimatedElementUpdated(element);
+        layoutAnimatedElementUpdated(element, group);
     }
 }
 
@@ -66,7 +66,15 @@ export function layoutAnimatedElementLeave(element: AnimatableElement): void {
     element.hasAttribute('layout-id') && morphElementLeave(element);
 }
 
-export function layoutAnimatedElementUpdated(element: AnimatableElement): void {
+export function layoutAnimatedElementUpdated(element: AnimatableElement, group?: string): void {
+    if (group && element.getAttribute('layout-group') !== group) {
+        return;
+    }
+
+    if (!group && element.hasAttribute('layout-group')) {
+        return;
+    }
+
     const animatableChildren = Array.from(element.children).filter((child) => isAnimatableElement(child));
     const previousSnapshot = getSnapshot(element);
     const currentSnapshot = recordSnapshot(element);
