@@ -1,3 +1,4 @@
+import { copyFileSync } from 'node:fs';
 import { URL, fileURLToPath } from 'node:url';
 
 import components from 'unplugin-vue-components/vite';
@@ -56,6 +57,15 @@ export default defineConfig({
                 ],
             },
         }),
+        {
+            name: 'github-pages',
+            closeBundle() {
+                copyFileSync(
+                    fileURLToPath(new URL('./dist/index.html', import.meta.url)),
+                    fileURLToPath(new URL('./dist/404.html', import.meta.url)),
+                );
+            },
+        },
     ],
     resolve: {
         alias: {
