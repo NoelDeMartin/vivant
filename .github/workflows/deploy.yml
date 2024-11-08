@@ -1,25 +1,18 @@
 name: Deploy
 
 on:
-    push:
-        branches: ['main']
+    workflow_run:
+        workflows: ['CI']
+        branches: [main]
+        types:
+            - completed
 
-    workflow_dispatch:
-
-permissions:
-    contents: read
-    pages: write
-    id-token: write
-
-concurrency:
-    group: 'pages'
-    cancel-in-progress: true
+env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
     deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -29,9 +22,14 @@ jobs:
                   cache: 'npm'
             - run: npm ci
             - run: npm run build
-            - uses: actions/configure-pages@v4
-            - uses: actions/upload-pages-artifact@v3
-              with:
-                  path: './playground/dist'
-            - uses: actions/deploy-pages@v4
-              id: deployment
+            - name: Push to gh-pages branch
+              run: |
+                  cd playground/dist
+                  touch .nojekyll
+                  git config user.name 'github-actions[bot]'
+                  git config user.email 'github-actions[bot]@users.noreply.github.com'
+                  git init
+                  git checkout -b gh-pages
+                  git add -A
+                  git commit -m 'deploy'
+                  git push -f https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git gh-pages
