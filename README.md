@@ -3,9 +3,9 @@
 > [!WARNING]
 > For now, this is nothing more than a proof of concept; use it at your own discretion. I'm not sure how far I'll take the project, but if you think this is cool or have some questions, let me know :).
 
-Vivant is an animation library for Vue, powered by [@vueuse/motion](https://motion.vueuse.org/), and supporting Layout animations like [Framer Motion](https://www.framer.com/motion/).
+Vivant is an animation library for Vue, powered by [@vueuse/motion](https://motion.vueuse.org/), and supporting Layout Animations like [Framer Motion](https://www.framer.com/motion/).
 
-See what it can do [in the Playground](https://noeldemartin.github.io/vivant/).
+See what it can do [in the playground](https://noeldemartin.github.io/vivant/).
 
 ## Installation
 
