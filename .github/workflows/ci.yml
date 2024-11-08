@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-    ci:
+    tests:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -14,3 +14,30 @@ jobs:
             - run: npm ci
             - run: npm run lint
             - run: npm run build
+    deploy:
+        if: github.ref == 'refs/heads/main'
+        needs: tests
+        runs-on: ubuntu-latest
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        permissions:
+            contents: write
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build
+            - name: Push to gh-pages branch
+              run: |
+                  cd playground/dist
+                  touch .nojekyll
+                  git init
+                  git config user.name 'github-actions[bot]'
+                  git config user.email 'github-actions[bot]@users.noreply.github.com'
+                  git checkout -b gh-pages
+                  git add -A
+                  git commit -m 'deploy'
+                  git push -f https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git gh-pages
